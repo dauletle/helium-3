@@ -8,6 +8,18 @@ from src.truck import Truck
 class UnloadStation(object):
 
     def __init__(self, name:str, env:simpy.Environment, tracker:Tracker, debug=False):
+        """Unload Station object to simulate the unload station. 
+        Unload stations are designated stations where trucks unload the mined Helium-3. 
+        Assume: 
+        - Each station can handle one truck at a time.
+        - Unloading takes 5 minutes.
+
+        Args:
+            name (str): Name of the unload station.
+            env (simpy.Environment): Simpy environment to run the simulation.
+            tracker (Tracker): Tracker object to track statistics of the simulation.
+            debug (bool, optional): Flag to enable debug mode. Defaults to False.
+        """
         self.name = name
         self.env = env
         # 5 minutes in hours
@@ -18,8 +30,6 @@ class UnloadStation(object):
         self.debug = debug
 
         self.status = dict()
-        self.visits = 0
-        self.tons = 0
         self.wait_time = 0
 
     def unload_truck(self, truck:Truck):

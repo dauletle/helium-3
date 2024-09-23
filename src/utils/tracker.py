@@ -56,7 +56,8 @@ class Tracker:
         #     print(f"{truck}: {wait_time:.2f} hours")
         
         # Print average truck wait time, as well as the maximum truck wait time, and the minimum truck wait time
-        print(f"\nAverage truck wait time: {sum(self.truck_wait_times.values()) / len(self.truck_wait_times):.2f} hours")
+        average = round(sum(self.truck_wait_times.values()) / len(self.truck_wait_times), 5)
+        print(f"\nAverage truck wait time: {average:.2f} hours")
         print(f"Maximum truck wait time: {max(self.truck_wait_times.values()):.2f} hours")
         print(f"Minimum truck wait time: {min(self.truck_wait_times.values()):.2f} hours")
 

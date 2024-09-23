@@ -5,8 +5,15 @@ import random
 
 class Mine:
     def __init__(self, env:simpy.Environment, debug:bool=False):
-        self.debug = debug
+        """Mine object to simulate the mining process. 
+        Mines are locations on the moon where the trucks extract Helium-3. 
+
+        Args:
+            env (simpy.Environment): Simpy environment to run the simulation.
+            debug (bool, optional): Flag to enable debug mode. Defaults to False.
+        """
         self.env = env
+        self.debug = debug
         
     def load_truck(self, truck):
         """Simulate the mine loading materials into the truck.

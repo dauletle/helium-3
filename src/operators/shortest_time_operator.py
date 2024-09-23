@@ -1,9 +1,14 @@
-# lunar_mine_operator.py
-
 import simpy
 
 class ShortestTimeOperator:
     def __init__(self, env: simpy.Environment, unload_stations:list, debug:bool=False):
+        """Algorithm to operate the mines, trucks, and unload stations, selecting the unload station with the shortest wait time.
+
+        Args:
+            env (simpy.Environment): The simpy environment to run the simulation.
+            unload_stations (list): The list of unload stations available.
+            debug (bool, optional): Flag to enable debug mode. Defaults to False.
+        """
         self.debug = debug
         self.env = env
         self.unload_stations = unload_stations

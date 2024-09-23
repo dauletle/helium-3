@@ -7,16 +7,30 @@ from src.utils.tracker import Tracker
 
 class Truck:
     def __init__(self, name:str, env:simpy.Environment, mine:Mine, operator:ShortestTimeOperator, tracker:Tracker, debug:bool=False):
+        """Truck object to simulate the truck. Trucks perform the actual mining tasks.
+        Assume:
+        - 100 tons of Helium-3 can be mined per hour
+        - 30 minutes travel time to unload
+        - The truck starts with no load.
+
+        Args:
+            name (str): Name of the truck.
+            env (simpy.Environment): Simpy environment to run the simulation.
+            mine (Mine): Mine object to simulate the mining process.
+            operator (ShortestTimeOperator): Operator object to route the truck to and from an unload station.
+            tracker (Tracker): Tracker object to track statistics of the simulation.
+            debug (bool, optional): Flag to enable debug mode. Defaults to False.
+        """
         self.name = name
         self.env = env
         self.mine = mine
         self.operator = operator
+        self.tracker = tracker
+        self.debug = debug
         self.capacity = 100
         self.travel_time = 0.5
         # The truck starts with no load
         self.load = 0
-        self.tracker = tracker
-        self.debug = debug
         self.action = env.process(self.work())
 
     def work(self):
