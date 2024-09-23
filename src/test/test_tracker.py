@@ -48,3 +48,5 @@ def test_tracker_report():
     tracker.log_station_wait_time("Station_01", 10)
     tracker.report()
     assert True
+
+# TODO Add additional tests to check edge cases, performance, etc.

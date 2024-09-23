@@ -59,5 +59,7 @@ def test_mine_loading(mine, truck, env, tracker):
     # Check if the truck was able to complete trips.
     assert tracker.truck_trips[truck.name] > 0, "Mine did not route the truck correctly"
 
+# TODO Add additional tests to check edge cases, performance, etc.
+
 if __name__ == "__main__":
     pytest.main()

@@ -56,3 +56,5 @@ def test_route_truck(env, mine, operator, tracker, unload_stations, truck):
     # Check if the truck was able to complete trips.
     station_name = unload_stations[0].name
     assert tracker.station_unloaded_amount[station_name] > 0, "ShortestTimeOperator did not route the truck correctly"
+
+# TODO Add additional tests to check edge cases, performance, etc.

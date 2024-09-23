@@ -17,6 +17,7 @@ from src.truck import Truck
 from src.mine import Mine
 
 def __main__():
+    # TODO Create interactive CLI.
     args = cli.get_arguments()
     number_of_mining_trucks = args.n
     number_of_unload_stations = args.m
@@ -44,6 +45,7 @@ def __main__():
         unload_stations.append(uld_stn)
     
     # Lunar Mine Operator manages routing to unload stations
+    # TODO Add option to select operator using the inportlib module.
     lunar_mine_operator = ShortestTimeOperator(env, unload_stations, debug)
     
     # Create the number of mining_trucks.Truck objects specified in number_of_mining_trucks
@@ -63,6 +65,7 @@ def __main__():
     env.run(until=simulation_time_hours)
 
     # Print the simulation statistics
+    # TODO Add option to create datasheets, graphs, etc.
     tracker.report()
 
 
