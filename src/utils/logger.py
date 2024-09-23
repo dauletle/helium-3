@@ -4,6 +4,7 @@ import os
 import sys
 import time
 
+# TODO develop later for replacement to print statements.
 class Logger:
     def __init__(self, log_path):
         self.log_path = log_path
