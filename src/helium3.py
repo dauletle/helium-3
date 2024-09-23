@@ -1,11 +1,20 @@
 import simpy
+import sys
+import os
 
-import utils.cli as cli
-from utils.tracker import Tracker
-from operators.lunar_mine_operator import LunarMineOperator
-from unload_station import UnloadStation
-from truck import Truck
-from mine import Mine
+# Get the directory containing the current script (helium3.py)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Add the parent directory of `src` to sys.path
+# This allows imports to work with the 'src' folder as a package
+sys.path.append(os.path.abspath(os.path.join(current_dir, '..')))
+
+import src.utils.cli as cli
+from src.utils.tracker import Tracker
+from src.operators.shortest_time_operator import ShortestTimeOperator
+from src.unload_station import UnloadStation
+from src.truck import Truck
+from src.mine import Mine
 
 def __main__():
     args = cli.get_arguments()
@@ -35,7 +44,7 @@ def __main__():
         unload_stations.append(uld_stn)
     
     # Lunar Mine Operator manages routing to unload stations
-    lunar_mine_operator = LunarMineOperator(env, unload_stations, debug)
+    lunar_mine_operator = ShortestTimeOperator(env, unload_stations, debug)
     
     # Create the number of mining_trucks.Truck objects specified in number_of_mining_trucks
     mining_trucks = []

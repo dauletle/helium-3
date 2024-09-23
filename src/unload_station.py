@@ -2,9 +2,12 @@
 
 import simpy
 
+from src.utils.tracker import Tracker
+from src.truck import Truck
+
 class UnloadStation(object):
 
-    def __init__(self, name, env, tracker, debug=False):
+    def __init__(self, name:str, env:simpy.Environment, tracker:Tracker, debug=False):
         self.name = name
         self.env = env
         # 5 minutes in hours
@@ -19,7 +22,15 @@ class UnloadStation(object):
         self.tons = 0
         self.wait_time = 0
 
-    def unload_truck(self, truck):
+    def unload_truck(self, truck:Truck):
+        """Simulate the unload station unloading the truck.
+
+        Args:
+            truck (Truck): The truck object to unload.
+
+        Yields:
+            simpy.Event: The event of unloading the truck.
+        """
         with self.station.request() as request:
             start_wait = self.env.now
             if self.debug: 
@@ -39,5 +50,9 @@ class UnloadStation(object):
 
     
     def get_wait_time(self):
-        # Calculate the total waiting time based on current requests and unloading time
+        """Calculate the total waiting time based on current requests and unloading time.
+
+        Returns:
+            int: The total waiting time.
+        """
         return len(self.station.queue) * self.unloading_time

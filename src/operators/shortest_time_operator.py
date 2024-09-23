@@ -2,13 +2,21 @@
 
 import simpy
 
-class LunarMineOperator:
-    def __init__(self, env, unload_stations, debug=False):
+class ShortestTimeOperator:
+    def __init__(self, env: simpy.Environment, unload_stations:list, debug:bool=False):
         self.debug = debug
         self.env = env
         self.unload_stations = unload_stations
 
     def route_truck(self, truck):
+        """Simulates a truck routing to the station with the shortest wait time.
+
+        Args:
+            truck (Truck): Truck object to be routed.
+
+        Yields:
+            simpy.Event: The event of routing the truck to the station with the shortest wait time.
+        """
         # Initialize variables to store the selected station and the shortest wait time
         shortest_wait_time = float('inf')
         chosen_station = None
