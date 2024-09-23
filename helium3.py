@@ -1,11 +1,11 @@
 import simpy
 
 import utils.cli as cli
+from utils.tracker import Tracker
+from operators.lunar_mine_operator import LunarMineOperator
 from unload_station import UnloadStation
 from truck import Truck
 from mine import Mine
-from lunar_mine_operator import LunarMineOperator
-from utils.tracker import Tracker
 
 def __main__():
     args = cli.get_arguments()
