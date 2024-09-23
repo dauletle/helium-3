@@ -3,10 +3,10 @@
 import simpy
 
 class LunarMineOperator:
-    def __init__(self, env, unload_stations, speed_factor):
+    def __init__(self, env, unload_stations, debug=False):
+        self.debug = debug
         self.env = env
         self.unload_stations = unload_stations
-        self.speed_factor = speed_factor
 
     def route_truck(self, truck):
         # Initialize variables to store the selected station and the shortest wait time
@@ -25,5 +25,6 @@ class LunarMineOperator:
                 chosen_station = station
 
         # After checking all stations, route the truck to the station with the shortest wait time
-        print("{} is being routed to {} with the shortest wait time at time {}".format(truck.name, chosen_station.name, self.env.now))
+        if self.debug: 
+            print("{} is being routed to {} with the shortest wait time at time {}".format(truck.name, chosen_station.name, self.env.now))
         yield self.env.process(chosen_station.unload_truck(truck))
