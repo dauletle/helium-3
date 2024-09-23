@@ -22,11 +22,6 @@ def env():
     return simpy.Environment()
 
 @pytest.fixture
-def mine(env):
-    """Fixture to set up a Mine object."""
-    return Mine(env, debug=False)
-
-@pytest.fixture
 def tracker():
     """Fixture to set up a Tracker object."""
     return Tracker()
@@ -42,22 +37,22 @@ def operator(env, unload_stations):
     return ShortestTimeOperator(env, unload_stations, debug=False)
 
 @pytest.fixture
+def mine(env):
+    """Fixture to set up a Mine object."""
+    return Mine(env, debug=False)
+
+@pytest.fixture
 def truck(env, mine, operator, tracker):
     """Create a Truck object for testing."""
     truck = Truck("Truck_01", env, mine, operator, tracker, debug=False)
     yield truck
 
-def test_mine_creation(mine):
-    """Test that a Mine object is created successfully."""
-    assert isinstance(mine, Mine), "Mine object was not created successfully"
-
-def test_mine_loading(mine, truck, env, tracker):
-    """Test that the Mine object loads materials correctly."""
-    # Create a Truck object
+def test_route_truck(env, mine, operator, tracker, unload_stations, truck):
+    """Test if the ShortestTimeOperator routes the truck correctly."""
+    # Load the truck
     env.process(mine.load_truck(truck))
+    env.process(operator.route_truck(truck))
     env.run(until=100)
     # Check if the truck was able to complete trips.
-    assert tracker.truck_trips[truck.name] > 0, "Mine did not route the truck correctly"
-
-if __name__ == "__main__":
-    pytest.main()
+    station_name = unload_stations[0].name
+    assert tracker.station_unloaded_amount[station_name] > 0, "ShortestTimeOperator did not route the truck correctly"

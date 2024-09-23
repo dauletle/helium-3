@@ -12,6 +12,7 @@ class Truck:
         - 100 tons of Helium-3 can be mined per hour
         - 30 minutes travel time to unload
         - The truck starts with no load.
+        - Since there are infinite mines, the truck is assigned to its own mine.
 
         Args:
             name (str): Name of the truck.
