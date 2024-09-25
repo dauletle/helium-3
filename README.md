@@ -1,6 +1,58 @@
-# Vast Take-Home Coding Challenge
+#
 
-## Challenge Prompt
+# Helium-3: Python Based Mining Simulator Software
+Developed for Vast Take-Home Coding Challenge
+
+Author: Diego Aulet-Leon
+
+
+## Description
+Helium-3 is a Python-based simulation environment built to simulate mining operations.  This project simulates the efficiency of lunar mining trucks transporting Helium-3 between mining sites and unload stations using the SimPy module. The program models real-time processes such as mining, traveling between sites, and unloading resources. The simulation tracks statistics, including truck round trips, wait times, and amounts unloaded. It’s designed to be scalable, customizable, and capable of running faster than real-time to allow for extensive testing and performance analysis.
+
+## Installation
+Install the dependencies using the following command in the Command Prompt or Terminal:
+```shell
+python setup.py install
+```
+ 
+Note that this was tested using the following:
+
+### Dependencies and Versions Required for Project:
+- pyfiglet==1.0.2
+- pytest==8.3.3
+- simpy==4.1.1
+- typer==0.12.5
+
+### Python Version:
+- 3.11.4
+
+### Tested on Operating System:
+- macOS Sonoma (Darwin 23.6.0)
+
+## Usage
+### Run the simulation
+1. Clone the git repository into the desired location.
+2. Open the Command Prompt or Terminal, and navigate to the project root folder.
+3. Enter the following command to run the simulator.  For instance, this would be how to run the simulation for 
+You can run the simulation with the Command Prompt or Terminal.  It is recommended to navigate to the For instance, if a simulation with 75 trucks and 3 unload stations needs to be performed, the following command can be used:
+```shell
+python run_simulation.py -n 75 -m 3
+```
+
+Below is the output for when the -h (help) argument is entered:
+```shell
+usage: run_simulation.py [-h] -n N -m M [-t T] [--debug]
+
+options:
+  -h, --help  show this help message and exit
+  -n N        Number of mining trucks.
+  -m M        Number of unload stations.
+  -t T        Simulation time in hours. Default is 72 hours.
+  --debug     Enable debug mode.
+```
+
+
+## Challenge Prompt (in PDF file on the repo)
 ### Objective:
 You are tasked with developing a simulation for a lunar Helium-3 space mining operation. This simulation will manage and track the efficiency of mining trucks and unload stations over a continuous 72-hour operation.
 

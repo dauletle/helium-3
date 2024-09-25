@@ -1,2 +1,5 @@
 *.pyc
 **/__pycache__/
+helium3_simulation.egg-info/*
+dist/*
+build/*
