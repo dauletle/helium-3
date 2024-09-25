@@ -51,6 +51,11 @@ options:
   --debug     Enable debug mode.
 ```
 
+### Run test scripts
+Given that the project has been cloned to the system, and the command prompt or terminal are open in the project root directory, enter the following command to run the test scripts:
+```shell
+pytest
+```
 
 ## Challenge Prompt (in PDF file on the repo)
 ### Objective:
