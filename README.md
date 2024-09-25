@@ -1,5 +1,3 @@
-#
-
 # Helium-3: Python Based Mining Simulator Software
 Developed for Vast Take-Home Coding Challenge
 
