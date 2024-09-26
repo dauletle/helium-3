@@ -3,7 +3,6 @@ Developed for Vast Take-Home Coding Challenge
 
 Author: Diego Aulet-Leon
 
-
 ## Description
 Helium-3 is a Python-based simulation environment built to simulate mining operations.  This project simulates the efficiency of lunar mining trucks transporting Helium-3 between mining sites and unload stations using the SimPy module. The program models real-time processes such as mining, traveling between sites, and unloading resources. The simulation tracks statistics, including truck round trips, wait times, and amounts unloaded. It’s designed to be scalable, customizable, and capable of running faster than real-time to allow for extensive testing and performance analysis.
 
@@ -30,9 +29,8 @@ Note that this was tested using the following:
 ## Usage
 ### Run the simulation
 1. Clone the git repository into the desired location.
-2. Open the Command Prompt or Terminal, and navigate to the project root folder.
-3. Enter the following command to run the simulator.  For instance, this would be how to run the simulation for 
-You can run the simulation with the Command Prompt or Terminal.  It is recommended to navigate to the For instance, if a simulation with 75 trucks and 3 unload stations needs to be performed, the following command can be used:
+2. Open the Command Prompt or Terminal and navigate to the project root folder.
+3. Enter the following command to run the simulator.  For instance, if a simulation with 75 trucks and 3 unload stations needs to be performed, the following command can be used:
 ```shell
 python run_simulation.py -n 75 -m 3
 ```
@@ -55,45 +53,54 @@ Given that the project has been cloned to the system, and the command prompt or 
 pytest
 ```
 
-## Challenge Prompt (in PDF file on the repo)
-### Objective:
-You are tasked with developing a simulation for a lunar Helium-3 space mining operation. This simulation will manage and track the efficiency of mining trucks and unload stations over a continuous 72-hour operation.
+### Design Approach
 
-### Key Components:
-- Mining Trucks: These vehicles perform the actual mining tasks.
-- Mining Sites: Locations on the moon where the trucks extract Helium-3. Assume an infinite number of sites, ensuring trucks always have access to mine without waiting.
-- Mining Unload Stations: Designated stations where trucks unload the mined Helium-3. Each station can handle one truck at a time.
-    
-### Operation Details:
-- There are (n) mining trucks and (m) mining unload stations.
-- Mining trucks can spend a random duration between 1 to 5 hours mining at the sites. 
-- It takes a mining truck 30 minutes to travel between a mining site and an unload station. 
-	- Assume all trucks are empty at a mining site when the simulation starts.
-- Unloading the mined Helium-3 at a station takes 5 minutes.
-- Trucks are assigned to the first available unload station. If all stations are occupied, trucks queue at the station with the shortest wait time and remain in their chosen queue.
+#### Simulation Using SimPy
+The program utilizes SimPy, a discrete-event simulation library, to simulate trucks transporting Helium-3 between lunar mining sites and unload stations. The SimPy module does the following:
+- The behavior of active components is modeled with processes. 
+- All processes live in an environment. 
+- Processes and components interact with the environment and with each other via events. 
 
-### Simulation Requirements:
-- The simulation must be configurable to accommodate various numbers of mining trucks (n) and unload stations (m). 
-- Calculate and report statistics for the performance and efficiency of each mining truck and unload station. 
-- The simulation represents 72 hours of non-stop mining and must execute faster than real-time to provide timely analysis.
-    
-### Language and programming paradigms:  
-Please implement this project in Python. Please leverage OOP where it is appropriate.
+Below are the key SimPy concepts applied in the simulation:
 
-### Goal of the exercise:
-The primary goal of this challenge is to demonstrate your professionalism as a software engineer. This process is designed to mimic a real-world scenario, including design, implementation, and design review. You will be evaluated based on various skills, including:
-1. Communication: Clear and concise explanations of your code and design.
-2. Documentation: Providing well-documented code and explanations.
-3. Code Cleanliness: Writing clean and organized code.
-4. Code Deployment: Demonstrating your ability to deploy and manage code.
-5. Testing: Implementing appropriate testing strategies.
-    
+##### 1. Environment:
+The simulation environment is created using SimPy, and it manages the simulation’s overall flow. The environment handles all time-driven activities, such as mining, traveling, and unloading.
 
-### Things to avoid:
-It is not the objective to spend an excessive amount of time on this challenge or create a fully developed system. Feel free to include pseudocode (in comments) to explain what you would do if given more time or resources. The focus is on showcasing your problem-solving and coding skills within a reasonable time frame.
+##### 2. Processes:
+Each truck in the simulation is modeled as a separate process. These trucks perform several activities in sequence:
+- Mining at a lunar site for a random duration. Their lifecycle (mining, traveling, unloading) are modeled using timeouts to simulate real-world delays.
+- Traveling from the mining site to the unloading station.
+- Waiting for an available unload station and unloading the mined Helium-3.
+- Returning to the mining site to start the next cycle.
+These activities are modeled using yield env.timeout() to simulate the passage of time between events.
 
-### How to Submit:
-Submit your code and any accompanying content, such as data or results, using GitHub or Bitbucket. Please email us a link to your submitted code when you are ready for us to review it.
+##### 3. Resources:
+Unload stations are modeled as shared resources that trucks must request access to. The stations have limited capacity (only one truck at a time can unload at each station). If a station is occupied, a truck waits for the next available station, simulating the queuing and scheduling behavior in real-world systems.
 
-### Questions:
-Please feel free to ask any clarifying questions about this assignment via email with your recruiter.
+##### 4. Statistics and Tracking:
+During the simulation, a custom Tracker class records various statistics like the number of round trips per truck, the amount unloaded at each station and wait times. This helps in evaluating the efficiency of the system after the simulation ends.
+
+### Testing with PyTest
+This project uses the PyTest framework to ensure that key components of the simulation are functioning as expected. Unit tests are written for essential modules, such as the Mine, Tracker, and Shortest Time Operator classes. These tests allow for validation of various parts of the simulation, including correct truck movement, accurate resource unloading, and the proper tracking of performance metrics. By leveraging PyTest’s features, the program ensures robust test coverage, providing a foundation for identifying bugs early in the development cycle.
+
+Here are some PyTest concepts applied to the Helium-3 Lunar Mining Simulation project:
+
+##### 1. Fixtures
+Fixtures are used in PyTest to provide a fixed baseline resource so that tests can reliably and consistently execute. In the Helium-3 project, fixtures can be applied to create reusable setups, such as initializing the SimPy environment, creating trucks, or setting up mining stations. 
+
+##### 2. Assertions
+Assertions are critical for unit testing as they verify whether the output of a function or method matches the expected result, allowing issues to be identified at the function level before integrating the system.  
+
+##### 3. Test Discovery
+By placing test files in a test folder with names prefixed by test_ allows PyTest to find and run all test cases without additional configuration, ensuring smooth scalability when new test cases are added.
+
+## Design Considerations for Future Development
+The challenge criteria required that when unload stations were not available, trucks should queue at the station with the shortest wait time and remain in their chosen queue. This would be the shortest time algorithm, but there are other approaches that can be more optimal (such as changing the queue when an unload station is available).  
+
+For this reason, extendibility and scalability were the two architectural approaches for this project.  The extendibility attribute was thought out by allowing the operator system to be dynamic for future development of testing different decision-making strategies (along with different unit testing modules).  The scalability attribute was added by accommodating various configurations of trucks and unload stations, with adjustable runtime parameters to speed up or slow down the simulation. This flexibility makes it possible to test different scenarios efficiently using the different command line arguments.
+
+## Conclusion
+This project was an enjoyable exercise in demonstrating my approach in building Python-based software. The goal was to show my comfort with researching and applying libraries I hadn’t previously used, like SimPy, ensuring that project objectives were met efficiently. My hope is that my years of experience and education in software development can be evident by demonstrating that my software is simple, clean, and well-organized object-oriented code. The goal for working on this project was to highlight my approaches in testing using PyTest, version control with Git, and deployment through comprehensive and clear documentation.  Please reach out if you have any questions, and I hope that this software demonstrates how well I can contribute to the projects at Vast.  Thank you.
+
+## Challenge Prompt
+The prompt is in the PDF file on the repository.
