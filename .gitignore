@@ -3,3 +3,4 @@
 helium3_simulation.egg-info/*
 dist/*
 build/*
+venv/*

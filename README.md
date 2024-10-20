@@ -7,13 +7,32 @@ Author: Diego Aulet-Leon
 Helium-3 is a Python-based simulation environment built to simulate mining operations.  This project simulates the efficiency of lunar mining trucks transporting Helium-3 between mining sites and unload stations using the SimPy module. The program models real-time processes such as mining, traveling between sites, and unloading resources. The simulation tracks statistics, including truck round trips, wait times, and amounts unloaded. It’s designed to be scalable, customizable, and capable of running faster than real-time to allow for extensive testing and performance analysis.
 
 ## Installation
-Install the dependencies using the following command in the Command Prompt or Terminal:
+Before installing the dependencies, setting up a virtual environment to ensure that all dependencies are isolated from the system’s global packages, preventing version conflicts and making the project environment more manageable and portable.  To do this, navigate to the project root directory and create a virtual environment.
 ```shell
-python setup.py install
+python -m venv venv
+```
+Then, activate the virtual environment before installing the dependencies.  
+- On MacOS or Linux:
+```shell
+source venv/bin/activate
+```
+- On Windows:
+```shell
+.\venv\Scripts\activate
+```
+
+
+Once the virtual environment is setup, install the dependencies using the following command in the Command Prompt or Terminal:
+```shell
+pip install -r requirements.txt
+```
+
+You can confirm the dependencies are installed correctly by running the following command
+```shell
+pip freeze
 ```
  
 Note that this was tested using the following:
-
 ### Dependencies and Versions Required for Project:
 - pyfiglet==1.0.2
 - pytest==8.3.3
@@ -30,7 +49,16 @@ Note that this was tested using the following:
 ### Run the simulation
 1. Clone the git repository into the desired location.
 2. Open the Command Prompt or Terminal and navigate to the project root folder.
-3. Enter the following command to run the simulator.  For instance, if a simulation with 75 trucks and 3 unload stations needs to be performed, the following command can be used:
+3. Activate the Virtual Environment:
+- On MacOS or Linux:
+```shell
+source venv/bin/activate
+```
+- On Windows:
+```shell
+.\venv\Scripts\activate
+```
+4. Enter the following command to run the simulator.  For instance, if a simulation with 75 trucks and 3 unload stations needs to be performed, the following command can be used:
 ```shell
 python run_simulation.py -n 75 -m 3
 ```
@@ -53,6 +81,10 @@ Given that the project has been cloned to the system, and the command prompt or 
 pytest
 ```
 
+When done, you can deactivate the virtual environment by entering:
+```shell
+deactivate
+```
 ### Design Approach
 
 #### Simulation Using SimPy
