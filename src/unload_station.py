@@ -1,11 +1,52 @@
 # unload_station.py
 
 import simpy
+import asyncio
 
 from src.utils.tracker import Tracker
 from src.truck import Truck
 
-class UnloadStation(object):
+class UnloadStation:
+    def __init__(self, name: str, speed_factor: float, tracker: Tracker, debug: bool = False):
+        """Unload Station object to simulate the unload station using asyncio."""
+        self.name = name
+        self.speed_factor = speed_factor
+        self.unloading_time = 0.083  # 5 minutes in hours
+        self.station = asyncio.Semaphore(1)  # Only one truck can unload at a time
+        self.tracker = tracker
+        self.debug = debug
+        self.status = dict()
+        self.wait_time = 0
+
+    async def unload_truck(self, truck: Truck):
+        """Async simulation of unloading a truck."""
+        start_wait = asyncio.get_event_loop().time()
+        if self.debug:
+            print(f"{truck.name} queues at {self.name} at time {start_wait}")
+        # Wait for the station to become available using the Semaphore
+        async with self.station:
+            wait_time = asyncio.get_event_loop().time() - start_wait
+            self.tracker.log_truck_wait_time(truck.name, wait_time)
+            self.tracker.log_station_wait_time(self.name, wait_time)
+
+            if self.debug:
+                print(f"{truck.name} starts unloading at {self.name} at time {asyncio.get_event_loop().time()}")
+            # Simulate unloading time
+            await asyncio.sleep((self.unloading_time * 3600) * self.speed_factor)  # Convert to seconds
+            self.tracker.log_unloaded_amount(self.name, truck.load)
+            truck.load = 0  # Unload the truck
+
+            if self.debug:
+                print(f"{truck.name} finishes unloading at {self.name} at time {asyncio.get_event_loop().time()}")
+
+    def get_wait_time(self):
+        """Calculate the total waiting time based on current requests and unloading time."""
+        # In this case, a Semaphore does not maintain an explicit queue like simpy.Resource,
+        # so this method could be adapted based on external tracking, if necessary.
+        # You can choose to implement it based on your tracker object or count wait times.
+        return self.wait_time
+
+class UnloadStationSimPy(object):
 
     def __init__(self, name:str, env:simpy.Environment, tracker:Tracker, debug=False):
         """Unload Station object to simulate the unload station. 

@@ -10,6 +10,8 @@ def get_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', type=int, required=True, help="Number of mining trucks.")
     parser.add_argument('-m', type=int, required=True, help="Number of unload stations.")
+    # Add optional argument for the speed factor.
+    parser.add_argument('-s', type=float, default=0.00001, help='Speed up the simulation by this factor. (e.g., 10 = 10x real-time)')
     # Add optional argument for the simulation time in hours.
     parser.add_argument('-t', type=int, default=3600, help="Simulation time in hours.  Default is 72 hours.")
     # Add optional argument for enabling the debug flag.

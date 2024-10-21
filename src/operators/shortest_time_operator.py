@@ -1,6 +1,45 @@
 import simpy
+import asyncio
 
 class ShortestTimeOperator:
+    def __init__(self, unload_stations: list, speed_factor: float, debug: bool = False):
+        """Algorithm to operate the mines, trucks, and unload stations, selecting the unload station with the shortest wait time using asyncio.
+
+        Args:
+            unload_stations (list): The list of available unload stations.
+            debug (bool, optional): Flag to enable debug mode. Defaults to False.
+        """
+        self.debug = debug
+        self.unload_stations = unload_stations
+        self.speed_factor = speed_factor
+
+    async def route_truck(self, truck):
+        """Asynchronously simulates routing the truck to the station with the shortest wait time.
+
+        Args:
+            truck (Truck): The truck object to be routed.
+        """
+        # Initialize variables to store the selected station and the shortest wait time
+        shortest_wait_time = float('inf')
+        chosen_station = None
+
+        # Iterate over each unload station to find the one with the shortest wait time
+        for station in self.unload_stations:
+            current_wait_time = station.get_wait_time()
+
+            # Check if this station has a shorter wait time than the current shortest wait time
+            if current_wait_time < shortest_wait_time:
+                shortest_wait_time = current_wait_time
+                chosen_station = station
+
+        # After finding the station, route the truck to the chosen one
+        if self.debug:
+            print(f"{truck.name} is being routed to {chosen_station.name} with the shortest wait time")
+
+        # Simulate the unloading process asynchronously
+        await chosen_station.unload_truck(truck)
+
+class ShortestTimeOperatorSimPy:
     def __init__(self, env: simpy.Environment, unload_stations:list, debug:bool=False):
         """Algorithm to operate the mines, trucks, and unload stations, selecting the unload station with the shortest wait time.
 
